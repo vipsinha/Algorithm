@@ -2,7 +2,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define TABLE_LEN 100
 #define STRING_LEN 10
 #define KEY_LEN 5
 
@@ -23,10 +22,10 @@ typedef struct TABLE table;
 
 table* createTable(void);
 items* createItem(char* key, char* value);
-table* insertData(table* node);
-void printData(table* node);
-void searchData(table* node);
-int hashTable(char* key, int size);
+table* insertItem(table* node);
+void printItem(table* node);
+void searchItem(table* node);
+int calculateHash(char* key, int size);
 
 int main(){
 
@@ -47,13 +46,13 @@ int main(){
             tableNode = createTable();
         }  
         else if(choice == 3){
-            tableNode = insertData(tableNode);
+            tableNode = insertItem(tableNode);
         }   
         else if(choice ==4){
-            searchData(tableNode);
+            searchItem(tableNode);
         }
         else if(choice ==5){
-            printData(tableNode);
+            printItem(tableNode);
         }
         else{
             choice = 1;
@@ -63,7 +62,7 @@ int main(){
 
     return 0;
 }
-int hashTable(char* key, int size){
+int calculateHash(char* key, int size){
     int hashValue;
 
     for(int i=0; i<strlen(key); i++)
@@ -99,7 +98,7 @@ items* createItem(char* key, char* value){
     return (node);
 }
 
-table* insertData(table* node){
+table* insertItem(table* node){
     char* key = (char*)malloc(KEY_LEN*sizeof(char));
     char* data = (char*)malloc(STRING_LEN*sizeof(char));
     int hash;
@@ -109,7 +108,7 @@ table* insertData(table* node){
         scanf("%s", key);
         scanf("%s", data);
 
-        hash = hashTable(key, node->size);
+        hash = calculateHash(key, node->size);
         node->itemsOnTable[hash] = createItem(key, data);
         node->count++;
     }
@@ -119,14 +118,14 @@ table* insertData(table* node){
     return (node);    
 }
 
-void searchData(table* node){
+void searchItem(table* node){
     char* key = (char*)malloc(KEY_LEN*sizeof(char));
     int hash;
 
     printf("Enter the key to search\n");
     scanf("%s", key);
 
-    hash = hashTable(key, node->size);
+    hash = calculateHash(key, node->size);
 
     if(strcmp(key, node->itemsOnTable[hash]->key) == 0){
         printf("Value = %s\n", node->itemsOnTable[hash]->value);
@@ -137,10 +136,10 @@ void searchData(table* node){
     }
 }
 
-void printData(table* node){
+void printItem(table* node){
     for(int i=0; i<node->size; i++){
         if(node->itemsOnTable[i]!= NULL){
-            printf("Values = %s\n", node->itemsOnTable[i]->value);
+            printf("Index=%d, Key=%s, Values = %s\n",i, node->itemsOnTable[i]->key, node->itemsOnTable[i]->value);
         }        
     }
 }
