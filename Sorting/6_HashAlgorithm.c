@@ -5,12 +5,14 @@
 #define STRING_LEN 10
 #define KEY_LEN 5
 
+typedef struct ITEM items;
+
 struct ITEM{
     char* key;
     char* value;
 };
 
-typedef struct ITEM items;
+typedef struct TABLE table;
 
 struct TABLE{
     items** itemsOnTable;
@@ -18,7 +20,6 @@ struct TABLE{
     int count;
 };
 
-typedef struct TABLE table;
 
 table* createTable(void);
 items* createItem(char* key, char* value);
