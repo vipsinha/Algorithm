@@ -19,6 +19,7 @@ void insertNodeAtEnd(node* head);
 void insertNodeAtStart(node** head);
 void removeNodeAtEnd(node* head);
 void removeNodeAtStart(node** head);
+void removeNodeByValue(node** head);
 void printNode(node* head);
 
 int main(void){
@@ -34,7 +35,8 @@ int main(void){
         printf("Enter 2 to insert node at start\n");
         printf("Enter 3 to remove node at end\n");
         printf("Enter 4 to remove node at start\n");
-        printf("Enter 5 to print nodes\n"); 
+        printf("Enter 5 to remove node at value\n");
+        printf("Enter 6 to print nodes\n"); 
         printf("Enter choice\n");
         scanf("%d", &choice);
 
@@ -51,6 +53,9 @@ int main(void){
             removeNodeAtStart(&headNode);
         }
         else if(choice == 5){
+            removeNodeByValue(&headNode);
+        }
+        else if(choice == 6){
             printNode(headNode);
         }
         else{
@@ -76,7 +81,8 @@ void insertNodeAtEnd(node* head){
         temp = temp->next;    
     }
 
-    temp->next = newNode;}
+    temp->next = newNode;
+}
 
 void insertNodeAtStart(node** head){
     node* newNode = (node*)malloc(sizeof(node));
@@ -107,6 +113,29 @@ void removeNodeAtStart(node** head){
     printf("Value at start node = %d\n", (*head)->data);
     free(*head);
     *head = temp;  
+}
+
+void removeNodeByValue(node** head){
+    int data;
+    node* temp = (*head);
+
+    printf("Enter the data to be removed\n");
+    scanf("%d", &data);
+
+    if((*head)->data == data){
+        printf("Data removed at node head\n");
+        free((*head));
+        *head = temp->next;
+    }else{
+        while(temp->next->next != NULL){
+            if(temp->next->data == data){
+                temp->next = temp->next->next;
+                free(temp->next);
+                break;
+            }
+            temp = temp->next;
+        }
+    }
 }
 
 void printNode(node* head){
